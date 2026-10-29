@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  temporal:
+    environment:
+      - DB=postgres
+      - DB_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PWD=123456
+      - POSTGRES_SEEDS=host.docker.internal
+    image: temporalio/auto-setup:1.21.1
+    ports:
+      - "7233:7233"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  temporal-admin-tools:
+    depends_on:
+      - temporal
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CLI_ADDRESS=temporal:7233
+    image: temporalio/admin-tools:1.21.1
+    stdin_open: true
+    tty: true
+  temporal-ui:
+    depends_on:
+      - temporal
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CODEC_ENDPOINT=http://localhost:8081
+    image: temporalio/ui:2.16.2
+    ports:
+      - 8086:8080
