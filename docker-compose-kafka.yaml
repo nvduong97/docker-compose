@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   kafka:
-    image: bitnami/kafka:latest
+    image: bitnamilegacy/kafka:latest
     container_name: kafka
     platform: linux/amd64  # hoặc linux/x86_64 tùy máy bạn
     ports:
